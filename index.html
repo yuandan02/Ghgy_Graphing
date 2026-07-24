@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>袁丹研究图库</title>
+  <link rel="stylesheet" href="app.css">
+  <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div><h1>袁丹研究图库</h1><p>公开在线版 · 画图工作台 · 研究图库 · 展示面板</p></div>
+    <div class="system-status"><span id="systemStats">正在读取数据库…</span><a class="primary public-source-link" href="https://github.com/yuandan02/Ghgy_Graphing" target="_blank" rel="noopener">GitHub</a></div>
+  </header>
+  <nav class="main-nav" aria-label="主导航">
+    <button data-view="gallery" class="nav-button active">研究图库</button>
+    <button data-view="workbench" class="nav-button">画图工作台</button>
+    <button data-view="factory" class="nav-button">指标工厂</button>
+    <button data-view="pipeline" class="nav-button">数据管道</button>
+    <button data-view="showcase" class="nav-button">展示面板 <span id="showcaseCount">0</span></button>
+  </nav>
+
+  <main>
+    <section id="galleryView" class="view active">
+      <div class="gallery-toolbar panel">
+        <input id="gallerySearch" type="search" placeholder="搜索图名、图号、指标ID…">
+        <select id="galleryKind"><option value="">全部图表类型</option><option value="single">单序列</option><option value="dual">双轴图</option><option value="multi">多序列单轴</option><option value="seasonal">季节性图</option><option value="seasonal_cny">季节性图（春节对齐）</option></select>
+        <select id="galleryDomain"><option value="">全部板块</option></select>
+        <span id="galleryCount" class="indicator-meta"></span>
+        <button id="openShowcase" class="primary">查看已选图片</button>
+      </div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div id="galleryPager" class="gallery-pager"></div>
+    </section>
+
+    <section id="workbenchView" class="view">
+      <div class="workspace">
+        <aside class="library panel">
+          <div class="section-heading"><div><strong>指标库</strong><span id="resultCount"></span></div><button id="clearSelection" class="text-button">清空</button></div>
+          <input id="search" type="search" placeholder="搜索名称、ID、来源…" autocomplete="off">
+          <div class="filter-row"><select id="domainFilter"><option value="">全部领域</option></select><select id="frequencyFilter"><option value="">全部频率</option></select></div>
+          <div id="indicatorList" class="indicator-list"></div>
+          <button id="indicatorMore" class="secondary indicator-more" hidden>加载更多指标</button>
+        </aside>
+
+        <section class="canvas-column">
+          <section class="control-panel panel">
+            <div class="field"><label for="chartTitle">图表名称</label><input id="chartTitle" value="未命名图表"></div>
+            <div class="field"><label for="chartMode">图表模板</label><select id="chartMode"><option value="timeseries">普通时间序列</option><option value="seasonal">季节性图（1月1日—12月31日）</option><option value="seasonal_cny">季节性图（春节对齐）</option></select></div>
+            <div class="date-controls">
+              <div class="field"><label for="startDate">默认开始日期</label><input id="startDate" type="date"></div>
+              <div class="field"><label for="endDate">默认结束日期</label><input id="endDate" type="date"></div>
+              <div class="field"><label for="endMode">默认结束方式</label><select id="endMode"><option value="latest">画到最新数据</option><option value="common">共同最新日期</option><option value="fixed">固定日期</option></select></div>
+              <div class="field"><label for="dateTickInterval">日期标注间隔</label><select id="dateTickInterval"><option value="auto">自动</option><option value="6m">每半年</option><option value="1y">每1年</option><option value="2y">每2年</option><option value="5y">每5年</option></select></div>
+            </div>
+            <div class="preset-row"><span>快捷范围</span><button data-years="1">1年</button><button data-years="2">2年</button><button data-years="3">3年</button><button data-years="5">5年</button><button data-years="10">10年</button><button data-years="all">全部</button><span id="effectiveRangeNote" class="effective-range-note"></span></div>
+            <div class="direction-controls" aria-label="坐标轴方向">
+              <span class="direction-label">轴方向</span>
+              <label class="axis-direction-toggle left-direction"><input id="leftReverse" type="checkbox"><span>左轴逆序</span></label>
+              <label class="axis-direction-toggle right-direction"><input id="rightReverse" type="checkbox"><span>右轴逆序</span></label>
+              <span class="direction-help">单轴图使用左轴；双轴图可分别设置。</span>
+            </div>
+            <div id="seasonalControls" class="seasonal-controls" hidden>
+              <label>季节性形式<select id="seasonalStyle"><option value="lines">逐年线</option><option value="band">统计区间带</option></select></label>
+              <label>统计年份（可跳跃多选）<select id="seasonalYears" multiple size="6"></select></label>
+              <label id="seasonalHighlightWrap" hidden>区间带上叠加的年份线<select id="seasonalHighlightYears" multiple size="6"></select></label>
+              <div id="seasonalStats" class="seasonal-stats" hidden><label><input id="seasonalShowAverage" type="checkbox" checked>平均线</label><label><input id="seasonalShowMedian" type="checkbox" checked>中位数线</label></div>
+              <div class="seasonal-color-block"><span>年份线颜色</span><div id="seasonalColorControls" class="seasonal-color-controls"></div></div>
+              <span class="seasonal-help">默认近5年；按住Command可选择不连续年份。春节对齐模板以春节当天为第0天，两种形式都会保存为正式图片参数。</span>
+            </div>
+          </section>
+
+          <section class="chart-panel panel"><div id="emptyState">从左侧选择指标后即可画图。</div><div id="chart"></div></section>
+
+          <section class="selected-panel panel">
+            <div class="section-heading"><strong>已选序列</strong><span>同一指标可复制到左右轴；正数=领先，负数=滞后，并可分别设置日期区间与MA</span></div>
+            <div id="selectedSeries" class="selected-series"></div>
+          </section>
+
+          <section class="axis-panel panel">
+            <div class="axis-block left-axis"><div class="axis-title">左轴（blue）</div><label>最小值<input id="leftMin" inputmode="decimal" placeholder="自动"></label><label>最大值<input id="leftMax" inputmode="decimal" placeholder="自动"></label></div>
+            <div class="axis-block right-axis"><div class="axis-title">右轴（red）</div><label>最小值<input id="rightMin" inputmode="decimal" placeholder="自动"></label><label>最大值<input id="rightMax" inputmode="decimal" placeholder="自动"></label></div>
+            <div class="publish-block">
+              <label>图库板块<input id="chartDomain" list="domainOptions" value="未分类" placeholder="可输入新板块"><datalist id="domainOptions"></datalist></label>
+              <label>保存状态<select id="chartStatus"><option value="published" selected>正式发布</option><option value="draft">草稿</option></select></label>
+              <label>公开权限<select id="accessLevel"><option value="private">仅本地</option><option value="chart_only">只公开图表</option><option value="public">公开交互及数据</option><option value="restricted">待确认授权</option></select></label>
+              <button id="saveChart" class="primary">加入图库</button>
+            </div>
+          </section>
+          <div id="message" role="status"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="factoryView" class="view">
+      <div class="factory-layout">
+        <section class="factory-form panel">
+          <div class="section-heading"><strong>构建派生指标</strong><span>生成后自动获得指标ID和默认单序列图</span></div>
+          <div class="factory-fields">
+            <label>指标名称<input id="derivedName" placeholder="例如：铜金比"></label>
+            <label>基础变形<select id="derivedOperation"><option value="yoy">同比（%）</option><option value="mom">环比（%）</option><option value="qoq">季比（%）</option><option value="change">较上期变化</option><option value="difference">差值 A-B</option><option value="ratio">比值 A/B</option><option value="sum">求和 A+B+…</option><option value="product">乘积 A×B×…</option><option value="custom">自定义公式</option></select></label>
+            <label>单位<input id="derivedUnit" placeholder="例如：%、点、倍"></label>
+            <label>所属板块<input id="derivedDomain" list="domainOptions" value="派生指标"></label>
+          </div>
+          <section class="factory-picker" aria-label="搜索并加入公式指标">
+            <label>搜索原始或派生指标<input id="derivedIndicatorSearch" type="search" placeholder="输入指标名称、ID、来源或板块，例如：CPI、铜、Wind…" autocomplete="off"></label>
+            <div id="derivedSearchResults" class="factory-search-results"></div>
+          </section>
+          <div class="section-heading formula-input-heading"><strong>公式输入</strong><span>可加入任意多个指标；每个输入可先变形或滞后，再参与公式</span></div>
+          <div id="derivedInputs" class="derived-inputs"></div>
+          <label class="formula-field">自定义公式<textarea id="derivedExpression" rows="4" placeholder="例如：(A-B)/C*100 + log(D)，变量名见上方公式输入"></textarea><span>允许括号、+ − × ÷、幂和常用数学函数；多指标按共同日期对齐。复杂计算建议先为各输入选择同比、环比、变化、对数或滞后。</span></label>
+          <div class="factory-actions"><button id="saveDerived" class="primary">生成指标并加入指标库</button><span id="derivedMessage"></span></div>
+        </section>
+        <section class="factory-list panel"><div class="section-heading"><strong>已构建指标</strong><span id="derivedCount">0 个</span></div><div id="derivedList"></div></section>
+      </div>
+    </section>
+
+    <section id="pipelineView" class="view">
+      <div class="pipeline-hero panel">
+        <div><strong>Excel智能增量管道</strong><span id="pipelinePath"></span><span id="importStatus" role="status"></span></div>
+        <div class="pipeline-actions"><button id="quickExisting" class="primary">更新已有指标</button><button id="discoverNew" class="secondary">更新并发现新指标</button><button id="fullAudit" class="secondary">完整历史审计</button></div>
+      </div>
+      <div id="pipelineStats" class="pipeline-stats"></div>
+      <section class="panel pipeline-table-wrap"><div class="section-heading"><strong>工作簿更新状态</strong><span>日常只读取历史尾部；每30天或身份变化时自动完整检查</span></div><div id="workbookStates"></div></section>
+      <section class="panel pipeline-table-wrap"><div class="section-heading"><strong>身份待确认队列</strong><span>名称、来源ID、来源与频率不能严格匹配时，不自动合并</span></div><div id="identityQueue"></div></section>
+    </section>
+
+    <section id="showcaseView" class="view">
+      <div class="showcase-toolbar panel"><span id="showcaseSummary">尚未选择图片</span><button id="clearShowcase" class="secondary">清空展示面板</button></div>
+      <div class="showcase-layout">
+        <aside class="showcase-sidebar panel">
+          <label>快速定位图片<select id="showcaseJump"><option value="">选择图名或ID</option></select></label>
+          <input id="showcaseSearch" type="search" placeholder="搜索已选图名、ID…">
+          <select id="showcaseKind"><option value="">全部图表类型</option><option value="single">单序列</option><option value="dual">双轴图</option><option value="multi">多序列单轴</option><option value="seasonal">季节性图</option><option value="seasonal_cny">季节性图（春节对齐）</option></select>
+          <select id="showcaseDomain"><option value="">全部板块</option></select>
+          <div id="showcasePickerResults" class="showcase-picker-results"></div>
+          <div id="showcaseNavList" class="showcase-nav-list"></div>
+        </aside>
+        <div id="showcaseGrid" class="showcase-grid"></div>
+      </div>
+    </section>
+  </main>
+  <dialog id="chartViewer" class="chart-viewer">
+    <div class="viewer-shell">
+      <header class="viewer-header"><button id="viewerBack" class="secondary">← 返回图库</button><div><strong id="viewerTitle"></strong><span id="viewerMeta"></span></div><button id="viewerEdit" class="secondary">工作台全部参数</button><a id="viewerExport" class="primary" download>导出PNG</a></header>
+      <div class="viewer-range-controls">
+        <label>开始<input id="viewerStart" type="date"></label><label>结束<input id="viewerEnd" type="date"></label>
+        <label>左轴最小<input id="viewerLeftMin" inputmode="decimal" placeholder="自动"></label><label>左轴最大<input id="viewerLeftMax" inputmode="decimal" placeholder="自动"></label>
+        <label>右轴最小<input id="viewerRightMin" inputmode="decimal" placeholder="自动"></label><label>右轴最大<input id="viewerRightMax" inputmode="decimal" placeholder="自动"></label>
+        <label>日期标注<select id="viewerDateTick"><option value="auto">自动</option><option value="6m">每半年</option><option value="1y">每1年</option><option value="2y">每2年</option><option value="5y">每5年</option></select></label>
+        <label class="axis-direction-toggle"><input id="viewerLabelLast" type="checkbox"><span>导出标注末值</span></label>
+        <button id="viewerApply" class="primary">应用范围</button>
+      </div>
+      <iframe id="viewerFrame" title="放大图表"></iframe>
+    </div>
+  </dialog>
+  <dialog id="duplicateDialog" class="duplicate-dialog">
+    <div class="duplicate-shell"><h2>这组指标已经存在于研究图库</h2><p id="duplicateText"></p><div class="duplicate-actions"><button id="duplicateCancel" class="secondary">取消保存</button><button id="duplicateUpdate" class="primary">更新已有图</button></div></div>
+  </dialog>
+  <script src="bootstrap-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
