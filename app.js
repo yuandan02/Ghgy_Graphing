@@ -80,7 +80,7 @@ function isSeasonalMode(mode){return mode==='seasonal'||mode==='seasonal_cny'}
 function springAligned(points,year,festivalDates,fill=false){const anchor=festivalDates?.[year];if(!anchor)return[];const anchorMs=Date.parse(`${anchor}T00:00:00Z`),raw=[...points].sort((a,b)=>a.date.localeCompare(b.date)).map(p=>({...p,aligned_day:Math.round((Date.parse(`${p.date}T00:00:00Z`)-anchorMs)/86400000)}));if(!fill||!raw.length)return raw;const exact=new Map(raw.map(p=>[p.aligned_day,p])),out=[];let carry=null;for(let day=raw[0].aligned_day;day<=raw.at(-1).aligned_day;day++){if(exact.has(day))carry=exact.get(day);if(carry)out.push({...carry,aligned_day:day})}return out}
 function seasonalTraces(all,m,years,style,highlights,colors,showAverage,showMedian,alignment='calendar',festivalDates={}){const cny=alignment==='cny',byYear=new Map(years.map(y=>[y,all.filter(p=>Number(p.date.slice(0,4))===y)]));const aligned=(year,fill=false)=>cny?springAligned(byYear.get(year)||[],year,festivalDates,fill):(fill?annualFilled(byYear.get(year)||[]):(byYear.get(year)||[]));const lineForYear=(year,width=2.4)=>{const pts=aligned(year),color=colors[year]||seasonalDefaultColor(year,years);return{x:pts.map(p=>cny?p.aligned_day:`2000-${p.date.slice(5)}`),y:pts.map(p=>p.value),name:String(year),type:'scatter',mode:'lines',line:{color,width},customdata:pts.map(p=>[p.date,p.value_display||fmt(p.value)]),hovertemplate:'%{customdata[0]}<br>%{customdata[1]}<extra></extra>'}};if(style==='lines')return years.map((y,i)=>lineForYear(y,i===0?4:i<3?2.8:1.5));const grouped={};for(const y of years)for(const p of aligned(y,true)){const key=cny?p.aligned_day:p.date.slice(5);(grouped[key]??=[]).push(Number(p.value))}const keys=Object.keys(grouped).map(k=>cny?Number(k):k).sort(cny?((a,b)=>a-b):undefined),x=keys.map(k=>cny?k:`2000-${k}`),mins=keys.map(k=>Math.min(...grouped[k])),maxs=keys.map(k=>Math.max(...grouped[k])),avgs=keys.map(k=>grouped[k].reduce((a,b)=>a+b,0)/grouped[k].length),meds=keys.map(k=>median(grouped[k])),labels=keys.map(k=>cny?(Number(k)===0?'春节':`春节${Number(k)>0?'+':''}${k}天`):k),traces=[{x,y:mins,name:'Min–Max区间',type:'scatter',mode:'lines',line:{color:'rgba(128,128,128,0)',width:0},hoverinfo:'skip',showlegend:false},{x,y:maxs,name:'Min–Max区间',type:'scatter',mode:'lines',line:{color:'rgba(128,128,128,.45)',width:1},fill:'tonexty',fillcolor:'rgba(128,128,128,.22)',customdata:keys.map((k,i)=>[labels[i],fmt(mins[i]),fmt(maxs[i])]),hovertemplate:'%{customdata[0]}<br>Min：%{customdata[1]}<br>Max：%{customdata[2]}<extra></extra>'}];if(showAverage)traces.push({x,y:avgs,name:'平均值',type:'scatter',mode:'lines',line:{color:'#444444',width:2.6},customdata:keys.map((k,i)=>[labels[i],fmt(avgs[i])]),hovertemplate:'%{customdata[0]}<br>%{customdata[1]}<extra></extra>'});if(showMedian)traces.push({x,y:meds,name:'中位数',type:'scatter',mode:'lines',line:{color:'#777777',width:2,dash:'dash'},customdata:keys.map((k,i)=>[labels[i],fmt(meds[i])]),hovertemplate:'%{customdata[0]}<br>%{customdata[1]}<extra></extra>'});return traces.concat(highlights.filter(y=>years.includes(y)).map(y=>lineForYear(y,2.8)))}
 function yAxis(side){const min=numOrNull(`${side}Min`),max=numOrNull(`${side}Max`),reverse=$(`${side}Reverse`).checked,units=[...new Set(state.series.filter(s=>s.axis===side).map(s=>s.indicator.unit).filter(Boolean))],title=units.length===1?units[0]:units.length>1?'多单位':'',a={fixedrange:false,autorange:reverse?'reversed':true,showgrid:side==='left',gridcolor:'#e8ebef',gridwidth:1,showline:false,zeroline:false,separatethousands:true,exponentformat:'none',showexponent:'none',automargin:true,tickformat:',.8~f',title:title?{text:title,standoff:8}:undefined};if(min!=null&&max!=null){a.range=reverse?[max,min]:[min,max];a.autorange=false}return a}
-async function refreshChart(){const renderSeq=++state.chartRenderSeq;if(!state.series.length){$('emptyState').style.display='grid';$('effectiveRangeNote').textContent='';Plotly.purge('chart');return}$('emptyState').style.display='none';const mode=$('chartMode').value,seasonal=isSeasonalMode(mode),cny=mode==='seasonal_cny';$('seasonalControls').hidden=!seasonal;if(seasonal)$('effectiveRangeNote').textContent=cny?'横轴以春节当天为第0天':'';const activeSeries=seasonal?[state.series[0]]:state.series,ids=[...new Set(activeSeries.map(s=>s.indicator.indicator_id))],start=seasonal?activeSeries[0].indicator.first_date:($('startDate').value||state.series.map(s=>s.start_date).filter(Boolean).sort()[0]),end=seasonal?activeSeries[0].indicator.latest_date:resolvedEndDate();if(!seasonal&&$('endMode').value!=='fixed')$('endDate').value=end;const payload=await getJSON(`/api/series?${new URLSearchParams({ids:ids.join(','),start,end})}`);if(renderSeq!==state.chartRenderSeq)return;state.seriesPayload=payload;
+async function refreshChart(){if(STATIC_MODE)await ensurePublicPlotly();const renderSeq=++state.chartRenderSeq;if(!state.series.length){$('emptyState').style.display='grid';$('effectiveRangeNote').textContent='';Plotly.purge('chart');return}$('emptyState').style.display='none';const mode=$('chartMode').value,seasonal=isSeasonalMode(mode),cny=mode==='seasonal_cny';$('seasonalControls').hidden=!seasonal;if(seasonal)$('effectiveRangeNote').textContent=cny?'横轴以春节当天为第0天':'';const activeSeries=seasonal?[state.series[0]]:state.series,ids=[...new Set(activeSeries.map(s=>s.indicator.indicator_id))],start=seasonal?activeSeries[0].indicator.first_date:($('startDate').value||state.series.map(s=>s.start_date).filter(Boolean).sort()[0]),end=seasonal?activeSeries[0].indicator.latest_date:resolvedEndDate();if(!seasonal&&$('endMode').value!=='fixed')$('endDate').value=end;const payload=await getJSON(`/api/series?${new URLSearchParams({ids:ids.join(','),start,end})}`);if(renderSeq!==state.chartRenderSeq)return;state.seriesPayload=payload;
   let traces,layout;if(seasonal){const s=activeSeries[0],m=payload.metadata[s.indicator.indicator_id],all=moving(payload.series[s.indicator.indicator_id]||[],s.ma_days);populateSeasonalYears(all);const style=$('seasonalStyle').value,years=selectedSeasonalYears().sort((a,b)=>b-a),highlights=selectedSeasonalHighlights().sort((a,b)=>b-a);$('seasonalHighlightWrap').hidden=style!=='band';$('seasonalStats').hidden=style!=='band';renderSeasonalColorControls();traces=seasonalTraces(all,m,years,style,highlights,state.seasonalColors,$('seasonalShowAverage').checked,$('seasonalShowMedian').checked,cny?'cny':'calendar',payload.spring_festival_dates||{});traces.forEach(t=>{if(t.showlegend!==false)t.showlegend=true});const cnyAxis={range:[-60,345],tickvals:[-60,0,60,120,180,240,300],ticktext:['春节前60天','春节','春节后60天','春节后120天','春节后180天','春节后240天','春节后300天'],tickangle:0,showgrid:false,automargin:true};layout={margin:{l:72,r:34,t:48,b:48},hovermode:'closest',showlegend:true,legend:{orientation:'h',x:.5,xanchor:'center',y:1.02,yanchor:'bottom',font:{size:13}},xaxis:cny?cnyAxis:{range:['2000-01-01','2000-12-31'],...smartDateAxis(null,null,$('chart').clientWidth,true)},shapes:cny?[{type:'line',x0:0,x1:0,yref:'paper',y0:0,y1:1,line:{color:'#9aa3ad',width:1,dash:'dot'}}]:[],yaxis:yAxis('left'),plot_bgcolor:'#fff',paper_bgcolor:'#fff'}
   }else{const display=effectiveTimeRange($('startDate').value,end,state.series,$('endMode').value);$('effectiveRangeNote').textContent=(display.start&&display.end)?`实际显示：${display.start} → ${display.end}`:'';traces=state.series.map(s=>{const m=payload.metadata[s.indicator.indicator_id],seriesEnd=s.end_mode==='latest'?m.latest_date:s.end_date,transformed=moving((payload.series[s.indicator.indicator_id]||[]).filter(p=>(!s.start_date||p.date>=s.start_date)&&(!seriesEnd||p.date<=seriesEnd)),s.ma_days).map(p=>({...p,date:shiftedDate(p.date,s.shift_days)})),pts=pointsInViewport(transformed,display.start,display.end),color=s.axis==='right'?'red':'blue',name=(s.label||m.name)+(s.ma_days>1?` · MA${s.ma_days}`:'')+shiftLabel(s.shift_days);const t={x:pts.map(p=>p.date),y:pts.map(p=>p.value),name,showlegend:true,yaxis:s.axis==='right'?'y2':'y',customdata:pts.map(p=>[p.value_display||fmt(p.value)]),hovertemplate:`%{x|%Y-%m-%d}<br>%{customdata[0]}<extra></extra>`};return s.chart_type==='bar'?Object.assign(t,{type:'bar',marker:{color}}):Object.assign(t,{type:'scatter',mode:'lines',line:{color,width:s.axis==='right'?2:2.5}})});layout={margin:{l:76,r:76,t:48,b:48},hovermode:'closest',barmode:'group',showlegend:true,legend:{orientation:'h',x:.5,xanchor:'center',y:1.02,yanchor:'bottom',font:{size:13}},xaxis:{range:[display.start,display.end],...smartDateAxis(display.start,display.end,$('chart').clientWidth,false,$('dateTickInterval').value)},yaxis:yAxis('left'),yaxis2:{...yAxis('right'),overlaying:'y',side:'right'},plot_bgcolor:'#fff',paper_bgcolor:'#fff'}}Plotly.react('chart',traces,layout,{responsive:true,displaylogo:false,displayModeBar:false})}
 function chartConfig(){const series=state.series.map(s=>({series_key:s.series_key,indicator_id:s.indicator.indicator_id,axis:s.axis,chart_type:s.chart_type,ma_days:s.ma_days,shift_days:s.shift_days||0,start_date:s.start_date,end_date:s.end_date,end_mode:s.end_mode,label:s.label})),indicator_ids=[...new Set(series.map(s=>s.indicator_id))].sort(),baseStart=$('startDate').value,baseEnd=resolvedEndDate(),mode=$('endMode').value,display=effectiveTimeRange(baseStart,baseEnd,state.series,mode);return{chart_id:state.chartId,chart_mode:$('chartMode').value,date_tick_interval:$('dateTickInterval').value,indicator_ids,indicator_combo_signature:indicator_ids.join('|'),title:$('chartTitle').value.trim()||'未命名图表',domain:$('chartDomain').value.trim()||'未分类',status:$('chartStatus').value,access_level:$('accessLevel').value,base_start_date:baseStart,base_end_date:baseEnd,start_date:display.start,end_date:display.end,end_mode:mode,seasonal_style:$('seasonalStyle').value,seasonal_years:selectedSeasonalYears(),seasonal_highlight_years:selectedSeasonalHighlights(),seasonal_show_average:$('seasonalShowAverage').checked,seasonal_show_median:$('seasonalShowMedian').checked,seasonal_colors:{...state.seasonalColors},left_axis:{min:numOrNull('leftMin'),max:numOrNull('leftMax'),reverse:$('leftReverse').checked},right_axis:{min:numOrNull('rightMin'),max:numOrNull('rightMax'),reverse:$('rightReverse').checked},series}}
@@ -127,4 +127,64 @@ $('viewerApply').onclick=async e=>{const c=state.charts.find(x=>x.chart_id===sta
 }
 function showMessage(t,error=false){$('message').textContent=t;$('message').style.color=error?'#b42318':'#4d5a69'}function escapeHTML(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 const baseRenderPipeline=renderPipeline;renderPipeline=function(){baseRenderPipeline();const labels={existing_only:'更新已有指标',discover_new:'更新并发现新指标',full_audit:'完整历史审计',incremental:'智能增量'};document.querySelectorAll('#workbookStates tbody tr').forEach((row,i)=>{const item=state.pipeline?.workbooks?.[i];if(item&&row.children[1])row.children[1].textContent=labels[item.last_mode]||item.last_mode||'—'})}
-initialize().catch(e=>showMessage(e.message,true));
+
+const publicHydrateLocalFigures=hydrateLocalFigures;
+let publicPlotlyPromise=null;
+function ensurePublicPlotly(){
+  if(window.Plotly)return Promise.resolve(window.Plotly);
+  if(publicPlotlyPromise)return publicPlotlyPromise;
+  publicPlotlyPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://cdn.plot.ly/plotly-3.0.1.min.js';
+    script.async=true;
+    script.onload=()=>resolve(window.Plotly);
+    script.onerror=()=>reject(new Error('图表组件加载失败，请检查网络后重试。'));
+    document.head.appendChild(script);
+  });
+  return publicPlotlyPromise;
+}
+hydrateLocalFigures=function(){
+  if(window.GALLERY_BOOTSTRAP?.series)publicHydrateLocalFigures();
+};
+async function ensurePublicChartFigure(chart){
+  if(!STATIC_MODE||chart?.figure||!chart?.config?.series?.length)return;
+  await ensurePublicPlotly();
+  const config=chart.config||{};
+  const ids=[...new Set((config.series||[]).map(item=>item.indicator_id).filter(Boolean))];
+  if(!ids.length)return;
+  const seasonal=config.chart_mode==='seasonal'||config.chart_mode==='seasonal_cny';
+  const seasonalYears=(config.seasonal_years||[]).map(Number).filter(Number.isFinite);
+  const starts=(config.series||[]).map(item=>item.start_date).filter(Boolean).sort();
+  const ends=(config.series||[]).map(item=>item.end_date).filter(Boolean).sort();
+  const start=seasonal
+    ?(seasonalYears.length?Math.min(...seasonalYears)+'-01-01':state.indicators.find(item=>item.indicator_id===ids[0])?.first_date||'2010-01-01')
+    :(config.start_date||starts[0]||'2010-01-01');
+  const latest=ids.map(id=>state.indicators.find(item=>item.indicator_id===id)?.latest_date).filter(Boolean).sort().pop();
+  const end=seasonal
+    ?(seasonalYears.length?Math.max(...seasonalYears)+'-12-31':latest||'9999-12-31')
+    :(config.end_mode==='latest'?(latest||'9999-12-31'):(config.end_date||ends.pop()||latest||'9999-12-31'));
+  const payload=await getJSON(`/api/series?${new URLSearchParams({ids:ids.join(','),start,end})}`);
+  const bootstrap=window.GALLERY_BOOTSTRAP;
+  const oldSeries=bootstrap.series;
+  const oldCharts=state.charts;
+  bootstrap.series=payload.series;
+  state.charts=[chart];
+  try{publicHydrateLocalFigures()}finally{
+    state.charts=oldCharts;
+    bootstrap.series=oldSeries;
+  }
+}
+const publicOpenViewer=openViewer;
+openViewer=async function(chartId,origin){
+  const chart=state.charts.find(item=>item.chart_id===chartId);
+  try{await ensurePublicChartFigure(chart)}
+  catch(error){showMessage(error.message,true);return}
+  return publicOpenViewer(chartId,origin);
+};
+const publicLoadChart=loadChart;
+loadChart=async function(chartId){
+  await ensurePublicPlotly();
+  return publicLoadChart(chartId);
+};
+
+initialize().catch(e=>{$('systemStats').textContent='公开目录加载失败';showMessage(e.message,true)});
