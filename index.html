@@ -3,28 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>袁丹研究图库</title>
-  <link rel="stylesheet" href="app.css?v=9044fad52ffc">
+  <title>国海工业研究图库</title>
+  <link rel="stylesheet" href="app.css?v=ce3dc9011568">
   
 </head>
-<body>
+<body class="public-readonly">
   <header class="topbar">
-    <div><h1>袁丹研究图库</h1><p>公开在线版 · 画图工作台 · 研究图库 · 展示面板</p></div>
+    <div><h1>国海工业研究图库</h1><p>客户浏览版 · 研究图库 · 临时试画 · 展示面板</p></div>
     <div class="system-status"><span id="systemStats">正在读取数据库…</span><a class="primary public-source-link" href="https://github.com/yuandan02/Ghgy_Graphing" target="_blank" rel="noopener">GitHub</a></div>
   </header>
   <nav class="main-nav" aria-label="主导航">
     <button data-view="gallery" class="nav-button active">研究图库</button>
-    <button data-view="workbench" class="nav-button">画图工作台</button>
+    <button data-view="workbench" class="nav-button">临时试画</button>
     <button data-view="factory" class="nav-button">指标工厂</button>
     <button data-view="pipeline" class="nav-button">数据管道</button>
     <button data-view="showcase" class="nav-button">展示面板 <span id="showcaseCount">0</span></button>
   </nav>
+  <div class="public-mode-note">这是客户浏览版：可以搜索、筛选、放大、导出和临时试画；所有试画只保存在当前浏览器，不会修改“袁丹研究图库”的正式指标或图表。</div>
 
   <main>
     <section id="galleryView" class="view active">
       <div class="gallery-toolbar panel">
         <input id="gallerySearch" type="search" placeholder="搜索图名、图号、指标ID…">
-        <select id="galleryKind"><option value="">全部图表类型</option><option value="single">单序列</option><option value="dual">双轴图</option><option value="multi">多序列单轴</option><option value="seasonal">季节性图</option><option value="seasonal_cny">季节性图（春节对齐）</option></select>
+        <select id="galleryKind"><option value="">全部图表类型</option><option value="single">单序列</option><option value="dual" selected>双轴图</option><option value="multi">多序列单轴</option><option value="seasonal">季节性图</option><option value="seasonal_cny">季节性图（春节对齐）</option></select>
         <select id="galleryDomain"><option value="">全部板块</option></select>
         <span id="galleryCount" class="indicator-meta"></span>
         <button id="openShowcase" class="primary">查看已选图片</button>
@@ -84,7 +85,7 @@
               <label>图库板块<input id="chartDomain" list="domainOptions" value="未分类" placeholder="可输入新板块"><datalist id="domainOptions"></datalist></label>
               <label>保存状态<select id="chartStatus"><option value="published" selected>正式发布</option><option value="draft">草稿</option></select></label>
               <label>公开权限<select id="accessLevel"><option value="private">仅本地</option><option value="chart_only">只公开图表</option><option value="public">公开交互及数据</option><option value="restricted">待确认授权</option></select></label>
-              <button id="saveChart" class="primary">加入图库</button>
+              <button id="saveChart" class="primary">保存为本机草稿</button>
             </div>
           </section>
           <div id="message" role="status"></div>
@@ -98,7 +99,7 @@
           <div class="section-heading"><strong>构建派生指标</strong><span>生成后自动获得指标ID和默认单序列图</span></div>
           <div class="factory-fields">
             <label>指标名称<input id="derivedName" placeholder="例如：铜金比"></label>
-            <label>基础变形<select id="derivedOperation"><option value="yoy">同比（%）</option><option value="mom">环比（%）</option><option value="qoq">季比（%）</option><option value="change">较上期变化</option><option value="difference">差值 A-B</option><option value="ratio">比值 A/B</option><option value="sum">求和 A+B+…</option><option value="product">乘积 A×B×…</option><option value="custom">自定义公式</option></select></label>
+            <label>基础变形<select id="derivedOperation"><option value="level" selected>原值</option><option value="yoy">同比（%）</option><option value="mom">环比（%）</option><option value="qoq">季比（%）</option><option value="change">较上期变化</option><option value="difference">差值 A-B</option><option value="ratio">比值 A/B</option><option value="sum">求和 A+B+…</option><option value="product">乘积 A×B×…</option><option value="custom">自定义公式</option></select></label>
             <label>单位<input id="derivedUnit" placeholder="例如：%、点、倍"></label>
             <label>所属板块<input id="derivedDomain" list="domainOptions" value="派生指标"></label>
           </div>
@@ -118,8 +119,19 @@
     <section id="pipelineView" class="view">
       <div class="pipeline-hero panel">
         <div><strong>Excel智能增量管道</strong><span id="pipelinePath"></span><span id="importStatus" role="status"></span></div>
-        <div class="pipeline-actions"><button id="quickExisting" class="primary">更新已有指标</button><button id="discoverNew" class="secondary">更新并发现新指标</button><button id="fullAudit" class="secondary">完整历史审计</button></div>
+        <div class="pipeline-actions"><button id="scanWorkbooks" class="secondary">选择需要更新的Excel</button><button id="buildPublicPackage" class="secondary">生成客户公开包</button></div>
       </div>
+      <section class="panel workbook-picker-panel">
+        <div class="section-heading"><div><strong>本次更新文件</strong><span id="workbookSelectionSummary">尚未扫描；打开网页不会读取Excel</span></div><div class="workbook-picker-shortcuts"><button id="selectChangedWorkbooks" class="text-button">选择可能有更新</button><button id="selectNewWorkbooks" class="text-button">只选新文件</button><button id="selectAllWorkbooks" class="text-button">全选</button><button id="clearWorkbookSelection" class="text-button">清空</button></div></div>
+        <div id="workbookPicker" class="workbook-picker"><div class="pipeline-empty">点击“选择需要更新的Excel”后，仅扫描文件名、大小和修改时间，不读取工作簿内容。</div></div>
+        <div class="selected-import-actions">
+          <button id="quickExisting" class="primary">更新所选文件的已有指标</button>
+          <button id="discoverNew" class="secondary">更新并发现所选文件的新指标</button>
+          <button id="fullAudit" class="secondary">完整审计所选文件</button>
+          <span>只有点击上述按钮后才读取Excel；导入完成后自动刷新数据库、派生指标和受影响图表。</span>
+        </div>
+        <div id="publicPackageStatus" class="indicator-meta" role="status"></div>
+      </section>
       <div id="pipelineStats" class="pipeline-stats"></div>
       <section class="panel pipeline-table-wrap"><div class="section-heading"><strong>工作簿更新状态</strong><span>日常只读取历史尾部；每30天或身份变化时自动完整检查</span></div><div id="workbookStates"></div></section>
       <section class="panel pipeline-table-wrap"><div class="section-heading"><strong>身份待确认队列</strong><span>名称、来源ID、来源与频率不能严格匹配时，不自动合并</span></div><div id="identityQueue"></div></section>
@@ -142,7 +154,7 @@
   </main>
   <dialog id="chartViewer" class="chart-viewer">
     <div class="viewer-shell">
-      <header class="viewer-header"><button id="viewerBack" class="secondary">← 返回图库</button><div><strong id="viewerTitle"></strong><span id="viewerMeta"></span></div><button id="viewerEdit" class="secondary">工作台全部参数</button><a id="viewerExport" class="primary" download>导出PNG</a></header>
+      <header class="viewer-header"><button id="viewerBack" class="secondary">← 返回图库</button><div><strong id="viewerTitle"></strong><span id="viewerMeta"></span></div><button id="viewerEdit" class="secondary">临时试画参数</button><a id="viewerExport" class="primary" download>导出PNG</a></header>
       <div class="viewer-range-controls">
         <label>开始<input id="viewerStart" type="date"></label><label>结束<input id="viewerEnd" type="date"></label>
         <label>左轴最小<input id="viewerLeftMin" inputmode="decimal" placeholder="自动"></label><label>左轴最大<input id="viewerLeftMax" inputmode="decimal" placeholder="自动"></label>
@@ -157,7 +169,7 @@
   <dialog id="duplicateDialog" class="duplicate-dialog">
     <div class="duplicate-shell"><h2>这组指标已经存在于研究图库</h2><p id="duplicateText"></p><div class="duplicate-actions"><button id="duplicateCancel" class="secondary">取消保存</button><button id="duplicateUpdate" class="primary">更新已有图</button></div></div>
   </dialog>
-  <script src="bootstrap-data.js?v=4a704d064e0c"></script>
-  <script src="app.js?v=b89d42d86554"></script>
+  <script src="bootstrap-data.js?v=191e6f954654"></script>
+  <script src="app.js?v=d7edfdd8f99a"></script>
 </body>
 </html>
