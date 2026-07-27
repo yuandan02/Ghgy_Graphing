@@ -4,22 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>国海工业研究图库</title>
-  <link rel="stylesheet" href="app.css?v=0517abd333c0">
+  <link rel="stylesheet" href="app.css?v=4c70e83c1c92">
   
 </head>
 <body class="public-readonly">
   <header class="topbar">
-    <div><h1>国海工业研究图库</h1><p>客户浏览版 · 研究图库 · 临时试画 · 展示面板</p></div>
+    <div><h1>国海工业研究图库</h1><p>客户浏览版 · 草稿指标工厂 · 临时试画 · 研究图库 · 展示面板</p></div>
     <div class="system-status"><span id="systemStats">正在读取数据库…</span><a class="primary public-source-link" href="https://github.com/yuandan02/Ghgy_Graphing" target="_blank" rel="noopener">GitHub</a></div>
   </header>
   <nav class="main-nav" aria-label="主导航">
     <button data-view="gallery" class="nav-button active">研究图库</button>
     <button data-view="workbench" class="nav-button">临时试画</button>
-    <button data-view="factory" class="nav-button">指标工厂</button>
+    <button data-view="factory" class="nav-button">草稿指标工厂</button>
     <button data-view="pipeline" class="nav-button">数据管道</button>
     <button data-view="showcase" class="nav-button">展示面板 <span id="showcaseCount">0</span></button>
   </nav>
-  <div class="public-mode-note">这是客户浏览版：可以搜索、筛选、放大、导出和临时试画；所有试画只保存在当前浏览器，不会修改“袁丹研究图库”的正式指标或图表。</div>
+  <div class="public-mode-note">这是客户浏览版：可以搜索、筛选、放大、导出、临时试画，并在“草稿指标工厂”构建本机草稿指标。草稿只保存在当前浏览器，不会修改“袁丹研究图库”的正式指标、图表或 GitHub 数据。</div>
 
   <main>
     <section id="galleryView" class="view active">
@@ -96,7 +96,7 @@
     <section id="factoryView" class="view">
       <div class="factory-layout">
         <section class="factory-form panel">
-          <div class="section-heading"><strong>构建派生指标</strong><span>生成后自动获得指标ID和默认单序列图</span></div>
+          <div class="section-heading"><strong>构建本机草稿指标</strong><span>仅保存在当前浏览器，可继续用于临时试画</span></div>
           <div class="factory-fields">
             <label>指标名称<input id="derivedName" placeholder="例如：铜金比"></label>
             <label>基础变形<select id="derivedOperation"><option value="level" selected>原值</option><option value="yoy">同比（%）</option><option value="mom">环比（%）</option><option value="qoq">季比（%）</option><option value="change">较上期变化</option><option value="difference">差值 A-B</option><option value="ratio">比值 A/B</option><option value="sum">求和 A+B+…</option><option value="product">乘积 A×B×…</option><option value="custom">自定义公式</option></select></label>
@@ -110,9 +110,9 @@
           <div class="section-heading formula-input-heading"><strong>公式输入</strong><span>可加入任意多个指标；每个输入可先变形或滞后，再参与公式</span></div>
           <div id="derivedInputs" class="derived-inputs"></div>
           <label class="formula-field">自定义公式<textarea id="derivedExpression" rows="4" placeholder="例如：(A-B)/C*100 + log(D)，变量名见上方公式输入"></textarea><span>允许括号、+ − × ÷、幂和常用数学函数；多指标按共同日期对齐。复杂计算建议先为各输入选择同比、环比、变化、对数或滞后。</span></label>
-          <div class="factory-actions"><button id="saveDerived" class="primary">生成指标并加入指标库</button><span id="derivedMessage"></span></div>
+          <div class="factory-actions"><button id="saveDerived" class="primary">生成本机草稿指标</button><span id="derivedMessage"></span></div>
         </section>
-        <section class="factory-list panel"><div class="section-heading"><strong>已构建指标</strong><span id="derivedCount">0 个</span></div><div id="derivedList"></div></section>
+        <section class="factory-list panel"><div class="section-heading"><strong>正式指标与本机草稿</strong><span id="derivedCount">0 个</span></div><div id="derivedList"></div></section>
       </div>
     </section>
 
@@ -169,7 +169,7 @@
   <dialog id="duplicateDialog" class="duplicate-dialog">
     <div class="duplicate-shell"><h2>这组指标已经存在于研究图库</h2><p id="duplicateText"></p><div class="duplicate-actions"><button id="duplicateCancel" class="secondary">取消保存</button><button id="duplicateUpdate" class="primary">更新已有图</button></div></div>
   </dialog>
-  <script src="bootstrap-data.js?v=191e6f954654"></script>
-  <script src="app.js?v=ea799aed9d37"></script>
+  <script src="bootstrap-data.js?v=71dd9cb84044"></script>
+  <script src="app.js?v=66b3705418bc"></script>
 </body>
 </html>
