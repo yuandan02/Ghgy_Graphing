@@ -246,7 +246,7 @@ textarea{font:inherit;border:1px solid var(--border);border-radius:6px;backgroun
 .selected-import-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #edf0f3}
 .selected-import-actions span{color:var(--muted);font-size:12px;flex:1;min-width:260px}
 .public-mode-note{margin:10px 20px 0;padding:9px 12px;background:#eef5ff;border:1px solid #c7daf5;border-radius:8px;color:#38516f}
-.public-readonly [data-view="factory"],.public-readonly [data-view="pipeline"],.public-readonly #factoryView,.public-readonly #pipelineView{display:none!important}
+.public-readonly [data-view="pipeline"],.public-readonly #pipelineView{display:none!important}
 .public-readonly .publish-block label:nth-child(2),.public-readonly .publish-block label:nth-child(3){display:none}
 .public-readonly .publish-block{grid-template-columns:minmax(180px,1fr) auto}
 
