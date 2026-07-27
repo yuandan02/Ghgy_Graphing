@@ -233,6 +233,20 @@ textarea{font:inherit;border:1px solid var(--border);border-radius:6px;backgroun
 .pipeline-hero>div:first-child{display:flex;flex-direction:column;gap:4px;min-width:0}
 .pipeline-hero span{color:var(--muted);overflow-wrap:anywhere}
 .pipeline-actions{display:flex;gap:8px;flex-wrap:wrap}
+.workbook-picker-panel{padding:13px;margin-bottom:12px}
+.workbook-picker-shortcuts{display:flex;gap:5px;flex-wrap:wrap}
+.workbook-picker{margin-top:8px;max-height:360px;overflow:auto;border-top:1px solid #edf0f3}
+.workbook-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:7px;padding-top:8px}
+.workbook-option{display:grid;grid-template-columns:22px minmax(0,1fr);gap:7px;align-items:start;padding:9px;border:1px solid var(--border);border-radius:7px;background:#fff}
+.workbook-option input{min-height:auto;margin-top:3px}
+.workbook-option strong,.workbook-option small{display:block;overflow-wrap:anywhere}
+.workbook-option small{color:var(--muted);font-size:11px;margin-top:3px}
+.workbook-option.invalid{background:#fff7f6}
+.workbook-error{color:#b42318!important}
+.selected-import-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #edf0f3}
+.selected-import-actions span{color:var(--muted);font-size:12px;flex:1;min-width:260px}
+.public-mode-note{margin:10px 20px 0;padding:9px 12px;background:#eef5ff;border:1px solid #c7daf5;border-radius:8px;color:#38516f}
+.public-readonly [data-view="factory"],.public-readonly [data-view="pipeline"],.public-readonly #factoryView,.public-readonly #pipelineView{display:none!important}
 
 .pipeline-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
 .pipeline-stat{background:#fff;border:1px solid var(--border);border-radius:9px;padding:12px}
