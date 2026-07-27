@@ -13,12 +13,12 @@
       "sha256": "a017ff7fecb911f9db963c0d55ae1d872318f97c405a6a7b5dc04a32687f009e"
     },
     "app.css": {
-      "bytes": 19943,
-      "sha256": "ce3dc901156860eaf435ee4e0ac0ced7a891ce7d7b207a33803b247f7b49aa05"
+      "bytes": 20137,
+      "sha256": "0517abd333c059920818477540c0822b83d53046a5f661e1bec79abb57dca58a"
     },
     "app.js": {
-      "bytes": 76945,
-      "sha256": "d7edfdd8f99aaeb4d331fa4d6cfd456733e325efd2811e7cc1239cc5526c99f7"
+      "bytes": 76954,
+      "sha256": "ea799aed9d3710c48500b3467658997dfafc722a98646e52225261d0ed1ffe75"
     },
     "bootstrap-data.js": {
       "bytes": 428031,
@@ -26,7 +26,7 @@
     },
     "index.html": {
       "bytes": 16545,
-      "sha256": "3032f3b460ff1ea26520e5ab00b3523cfe84e9cb715896ffdaf03808d0b842ad"
+      "sha256": "167c67b9a7949e846b683c4b6e7d69beb3dad87fea52fafcf164675b120c88a9"
     }
   },
   "excluded": [
