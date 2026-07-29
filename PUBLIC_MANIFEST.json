@@ -1,13 +1,20 @@
 {
-  "generated_at": "2026-07-29",
+  "generated_at": "2026-07-29T18:24:58+08:00",
   "indicator_count": 348,
   "chart_count": 12,
   "public_note_count": 2,
+  "public_chart_digest": "ad955822a7fcdc61303a1dbf3d9ab40484f7a748315707ff14bbdb2a13ea04a1",
+  "indicator_text_digest": "f1d30ea25ba28fc45cf9fd40a0db3e65f4ddf5c202a91c37a859b88bd61fbdee",
+  "derived_text_digest": "f65c7eb822eb03d57b4fb8a416c330d4d7400d5b20913ad9d99f9238997e7821",
   "observation_count_after_public_downsample": 441708,
   "files": {
     ".nojekyll": {
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PUBLIC_CONTENT_AUDIT.json": {
+      "bytes": 5437,
+      "sha256": "87b9c4d824558261cc4d0fae0c9e8738b132d4c1b40ed7589230d96ac1695cdf"
     },
     "README.md": {
       "bytes": 563,
@@ -22,12 +29,12 @@
       "sha256": "ae346c21c24173d1c84d7cab3893bbbd0938ac124823589696d50633ea35c0ed"
     },
     "bootstrap-data.js": {
-      "bytes": 338053,
-      "sha256": "8e27ba6b8d096fa0954bb037bde9099594cbf01ac9d18af515030fd34adc448a"
+      "bytes": 338119,
+      "sha256": "fd17464662f544f74a6f6c6c450dfe13f1c1339bd69590cabf316fb19d0a7e32"
     },
     "index.html": {
       "bytes": 22591,
-      "sha256": "2937b85a61a190cfbee0bb98f5269ec0ebad68c4c001e8978660a9bb796334e0"
+      "sha256": "9f72c5a379be225257b4aed74dbc1e850ee39dc0d1616c320f526aa1b133f763"
     }
   },
   "excluded": [

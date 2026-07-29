@@ -1,0 +1,118 @@
+{
+  "verified_at": "2026-07-29T18:24:59+08:00",
+  "public_chart_count": 12,
+  "public_chart_note_count": 2,
+  "public_chart_digest": "ad955822a7fcdc61303a1dbf3d9ab40484f7a748315707ff14bbdb2a13ea04a1",
+  "indicator_text_digest": "f1d30ea25ba28fc45cf9fd40a0db3e65f4ddf5c202a91c37a859b88bd61fbdee",
+  "derived_text_digest": "f65c7eb822eb03d57b4fb8a416c330d4d7400d5b20913ad9d99f9238997e7821",
+  "charts": [
+    {
+      "chart_id": "CH-DUAL-147C0D4F48F050CF",
+      "title_hash": "840d22000b9813b7ceb7d75d460322efc469fdc3894ee427048c1cb8a0fc346f",
+      "config_hash": "d736cb27e1b7bd3f3bd4e54ec84717b4c0185e69aefd783fdee9dddc74ef9ab2",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-16T17:24:34+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-25153ADE090D8329",
+      "title_hash": "395018a1fb483e52ac4dd2cd604994702f7786f67e7254738b462c9b5960f848",
+      "config_hash": "c2eab333ce395e72d838ed5da9d652d6dbd30c8d8e63ce6045b047854a1e5bff",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 1,
+      "note_length": 0,
+      "updated_at": "2026-07-29T10:22:42+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-31D5FD3270954396",
+      "title_hash": "56b8f770870009a4f502e8edc9948ebaf8ad7cbabe65fd62199b57b0c093899d",
+      "config_hash": "a375e007f6528ea2d66683de3faadbef29728249fada480e039e371fcc595651",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-27T13:09:02+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-5D5C40C9986176E6",
+      "title_hash": "4cf50221c1041b666e825b4ccc5807c4c0e1e5886f0924236b6c870fafc580ab",
+      "config_hash": "6a011d5f44adc8f20443cc769809bbfdc0bae481153b2d861f301fac087ec985",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-16T17:16:25+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-5F650304EC6F6BA1",
+      "title_hash": "13a45d7164c320a73956cf270c11bec6596c35f58c936a335199635a05f648d0",
+      "config_hash": "feea23c53d3b2327d0d84a9d19149bf9ddd73738c93a30c0cf10147bf4af12a0",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-16T17:24:05+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-60C8E3BFF0C95654",
+      "title_hash": "dbee11c9ae3c0ea7b8a5fdae9065dc51eb0ecc9267304eb23b6a8e7aee13a0f3",
+      "config_hash": "a40891e256382c009d9aeea1a52fed2df4af692f99cbfbc076d9ca7d4ff681b9",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-27T13:09:06+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-8CEE5A37DE19FAFA",
+      "title_hash": "f6c02a61255c44e221ebf1aaa6339724eadf26594ee730ff7dbeff019ec226a9",
+      "config_hash": "e02af53382769ee23b28b14b0fa2b9912ba9193be66593696595a6236b3c0533",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-20T10:55:04+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-A6E84DF2B71A8E98",
+      "title_hash": "f964a193ed1fbc1ff803d6aa1b0493dce2119336ffdcf217c2478ad37bf9452c",
+      "config_hash": "a2a5199f43fbca876f14ca44a80c0f47084c0c5ba723f2c0efc84a3968124b85",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-27T13:09:04+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-AA6D0F3957F4BBA1",
+      "title_hash": "f5a8850f825b33b957e7878ab9f617a0a3c91a1034fb3e55e10961abe844b997",
+      "config_hash": "935c4b794ad1d40aa1dd84276df121577b04e186e9809eb92073cabab03f52a4",
+      "note_hash": "6c713ff23410629856f7f4e55473a55edb172ec4eea6e6d1b6c797e5e7731234",
+      "note_version": 2,
+      "note_length": 316,
+      "updated_at": "2026-07-21T08:00:24+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-D197710DEBBE6531",
+      "title_hash": "d4ca2aa360c054fc076ecd52c898bdaf2c2d67692ced180d4d1be5090f119d08",
+      "config_hash": "964858a0ad682c3436f7d26afb849a06726a8de91bf23e18e7a297b09af7df3c",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-29T10:30:23+08:00"
+    },
+    {
+      "chart_id": "CH-DUAL-D55DC1794B045790",
+      "title_hash": "be0943febfbb606fa1d01d6c9bf602c1da42ce9203a430415a0c2f66e8b522c3",
+      "config_hash": "ddb96bd0ecc61ed16c6292c9261c77bdd925cfa6d068df30f4c1bddfda4e0858",
+      "note_hash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+      "note_version": 0,
+      "note_length": 0,
+      "updated_at": "2026-07-27T13:09:05+08:00"
+    },
+    {
+      "chart_id": "YD-CH-000002",
+      "title_hash": "c59ba0506f29681772e4047bf878a6f8807faf8ad9234da0d2b72fdc7df406e8",
+      "config_hash": "8606009e321c8f5adfe5784520b51915d591ef95fed7d874c1419b4a9be2754c",
+      "note_hash": "8096ae23b14f9ccdf19386f2396217b433c8a50302575e599bc5a5940ac2cc5e",
+      "note_version": 2,
+      "note_length": 9,
+      "updated_at": "2026-07-29T11:58:31+08:00"
+    }
+  ]
+}
