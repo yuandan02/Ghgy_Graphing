@@ -4,4 +4,6 @@
 
 客户可以在“草稿指标工厂”构建本机草稿指标，并继续用于临时试画。草稿和试画只保存在其自己的浏览器，不会修改发布者的正式数据库、正式图表或 GitHub 仓库；清除该网站的浏览器数据会同时清除草稿。
 
-在线地址：https://yuandan02.github.io/Ghgy_Graphing/
+固定最新地址：https://yuandan02.github.io/Ghgy_Graphing/
+
+本次独立版本：https://yuandan02.github.io/Ghgy_Graphing/260729-210622/

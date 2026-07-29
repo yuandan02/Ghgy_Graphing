@@ -74,7 +74,29 @@ function updateWorkbookSelectionSummary(){const valid=state.sourceWorkbooks.filt
 function renderWorkbookPicker(){const el=$('workbookPicker');if(!state.sourceWorkbooks.length){el.innerHTML='<div class="pipeline-empty">点击“选择需要更新的Excel”后，仅扫描文件名、大小和修改时间，不读取工作簿内容。</div>';updateWorkbookSelectionSummary();return}el.innerHTML=`<div class="workbook-grid">${state.sourceWorkbooks.map(x=>`<label class="workbook-option ${x.naming_error?'invalid':''}"><input type="checkbox" data-source-file="${escapeHTML(x.file)}" ${state.selectedWorkbooks.has(x.file)?'checked':''} ${x.naming_error?'disabled':''}><span><strong>${escapeHTML(x.file)}</strong><small>${escapeHTML(x.workbook_id||'命名不合规')} · ${escapeHTML(x.provider||'未知来源')} · ${x.known?'已有指标':'新文件'}${x.possibly_changed?' · 可能有更新':''}</small><small>修改 ${escapeHTML(String(x.modified_at||'—').slice(0,16).replace('T',' '))} · 上次导入 ${escapeHTML(String(x.last_imported_at||'—').slice(0,16).replace('T',' '))}</small>${x.naming_error?`<small class="workbook-error">${escapeHTML(x.naming_error)}</small>`:''}</span></label>`).join('')}</div>`;el.querySelectorAll('[data-source-file]').forEach(input=>input.onchange=()=>{input.checked?state.selectedWorkbooks.add(input.dataset.sourceFile):state.selectedWorkbooks.delete(input.dataset.sourceFile);updateWorkbookSelectionSummary()});updateWorkbookSelectionSummary()}
 async function scanSourceWorkbooks({autoSelect=true}={}){const button=$('scanWorkbooks');button.disabled=true;$('workbookSelectionSummary').textContent='正在重新扫描文件目录，不读取Excel内容…';try{const r=await getJSON(`/api/source-workbooks?user_initiated=true&_=${Date.now()}`,{cache:'no-store'});state.sourceWorkbooks=r.workbooks||[];state.sourceScanAt=r.scanned_at||new Date().toISOString();if(autoSelect)state.selectedWorkbooks=new Set(state.sourceWorkbooks.filter(x=>!x.naming_error&&x.possibly_changed).map(x=>x.file));else state.selectedWorkbooks=new Set();button.textContent='重新扫描Excel目录';renderWorkbookPicker()}catch(e){showImportStatus(e.message,true)}finally{button.disabled=false}}
 function selectSourceWorkbooks(mode){const valid=state.sourceWorkbooks.filter(x=>!x.naming_error);const selected=mode==='all'?valid:mode==='new'?valid.filter(x=>!x.known):mode==='changed'?valid.filter(x=>x.possibly_changed):[];state.selectedWorkbooks=new Set(selected.map(x=>x.file));renderWorkbookPicker()}
-async function buildPublicPackage(){const button=$('buildPublicPackage');button.disabled=true;$('publicPackageStatus').textContent='正在从整合数据库生成客户公开包，不读取Excel…';try{const r=await getJSON('/api/build-public-package',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_initiated:true})});const m=r.manifest||{};$('publicPackageStatus').textContent=`客户公开包已生成：${Number(m.indicator_count||0).toLocaleString()} 个指标、${Number(m.chart_count||0).toLocaleString()} 张图。目录：${r.package_dir}`}catch(e){$('publicPackageStatus').textContent=e.message;$('publicPackageStatus').style.color='#b42318'}finally{button.disabled=false}}
+async function buildPublicPackage(){
+  const button=$('buildPublicPackage'),status=$('publicPackageStatus');
+  button.disabled=true;
+  status.style.color='';
+  status.textContent='正在从整合数据库全量重建客户公开包并核对全部指标、图片、参数和文字，不读取Excel…';
+  try{
+    const r=await getJSON('/api/build-public-package',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_initiated:true})});
+    const m=r.manifest||{},releaseUrl=r.release_url||m.release_url||'',releaseId=r.release_id||m.release_id||'—';
+    status.replaceChildren(document.createTextNode(`客户公开包已生成并通过1:1审计：版本 ${releaseId}；${Number(m.indicator_count||0).toLocaleString()} 个指标、${Number(m.chart_count||0).toLocaleString()} 张图、${Number(m.public_note_count||0).toLocaleString()} 条正式说明。`));
+    if(releaseUrl){
+      const link=document.createElement('a');
+      link.href=releaseUrl;
+      link.target='_blank';
+      link.rel='noopener';
+      link.textContent=' 打开本次独立版本网址';
+      status.appendChild(link);
+    }
+    status.appendChild(document.createTextNode(` 本地目录：${r.package_dir}`));
+  }catch(e){
+    status.textContent=e.message;
+    status.style.color='#b42318';
+  }finally{button.disabled=false}
+}
 async function reloadAll(){const [system,indicators,charts,domains,derived,pipeline]=await Promise.all([getJSON('/api/system'),getJSON('/api/indicators'),getJSON('/api/charts'),getJSON('/api/domains'),getJSON('/api/derived'),getJSON('/api/pipeline')]);state.indicators=indicators;state.charts=charts;state.derived=derived;state.pipeline=pipeline;hydrateLocalFigures();$('systemStats').textContent=`${system.indicator_count} 个指标 · ${Number(system.observation_count).toLocaleString()} 个有效观测 · ${STATIC_MODE?'客户浏览模式':'正式模式'} · 公开包生成 ${system.latest_run?.finished_at?.slice(0,16).replace('T',' ')||'—'}`;populateFilters(domains);renderDerivedSearch();renderDerivedInputs();renderDerived();renderPipeline();renderLibrary();renderGallery();renderShowcase()}
 function switchView(view){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===`${view}View`));document.querySelectorAll('.nav-button').forEach(x=>x.classList.toggle('active',x.dataset.view===view));if(view==='gallery')renderGallery();if(view==='factory')renderDerived();if(view==='pipeline')renderPipeline();if(view==='showcase')renderShowcase()}
 function filteredIndicators(){const q=$('search').value.trim().toLowerCase(),d=$('domainFilter').value,f=$('frequencyFilter').value;return state.indicators.filter(x=>{const h=[x.name,x.indicator_id,x.external_id,x.publisher,x.source_system].join(' ').toLowerCase();return(!q||h.includes(q))&&(!d||x.domain===d)&&(!f||x.frequency===f)})}
