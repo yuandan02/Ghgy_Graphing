@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-07-27",
-  "indicator_count": 185,
-  "chart_count": 197,
-  "observation_count_after_public_downsample": 260693,
+  "generated_at": "2026-07-29",
+  "indicator_count": 348,
+  "chart_count": 361,
+  "observation_count_after_public_downsample": 441708,
   "files": {
     ".nojekyll": {
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "README.md": {
-      "bytes": 399,
-      "sha256": "a017ff7fecb911f9db963c0d55ae1d872318f97c405a6a7b5dc04a32687f009e"
+      "bytes": 563,
+      "sha256": "f13c4013cc7c2ec5fa3e8c3cf81e2ea3bc4de92a63eeefd846c5edc6db804a02"
     },
     "app.css": {
-      "bytes": 20137,
-      "sha256": "0517abd333c059920818477540c0822b83d53046a5f661e1bec79abb57dca58a"
+      "bytes": 30217,
+      "sha256": "5cbdb415eeeae836f20f67c85813d9f1da10934b4e9b7b59d0dffaf314c06dbb"
     },
     "app.js": {
-      "bytes": 76954,
-      "sha256": "ea799aed9d3710c48500b3467658997dfafc722a98646e52225261d0ed1ffe75"
+      "bytes": 114287,
+      "sha256": "95ed198c0b54267ea1a131be6fec872bbcd156ba31b5be3e7e0de09d41537369"
     },
     "bootstrap-data.js": {
-      "bytes": 428031,
-      "sha256": "191e6f954654860b9b8d577afea9e1ff9b1a1e9536a73e55aefbbfb5a97e3876"
+      "bytes": 760220,
+      "sha256": "d0a503348fa49817c808063954ba8ef0cdbb3b3e7213a6b8f9a5c464c84a3ff3"
     },
     "index.html": {
-      "bytes": 16545,
-      "sha256": "167c67b9a7949e846b683c4b6e7d69beb3dad87fea52fafcf164675b120c88a9"
+      "bytes": 22591,
+      "sha256": "61a7f316ecb4bbd5df037bcfcc8a3386baa28ba9f7a5018236e7a060551073c2"
     }
   },
   "excluded": [
