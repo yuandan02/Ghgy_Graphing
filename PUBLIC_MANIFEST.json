@@ -1,7 +1,8 @@
 {
   "generated_at": "2026-07-29",
   "indicator_count": 348,
-  "chart_count": 361,
+  "chart_count": 12,
+  "public_note_count": 2,
   "observation_count_after_public_downsample": 441708,
   "files": {
     ".nojekyll": {
@@ -17,16 +18,16 @@
       "sha256": "5cbdb415eeeae836f20f67c85813d9f1da10934b4e9b7b59d0dffaf314c06dbb"
     },
     "app.js": {
-      "bytes": 114287,
-      "sha256": "95ed198c0b54267ea1a131be6fec872bbcd156ba31b5be3e7e0de09d41537369"
+      "bytes": 114344,
+      "sha256": "ae346c21c24173d1c84d7cab3893bbbd0938ac124823589696d50633ea35c0ed"
     },
     "bootstrap-data.js": {
-      "bytes": 772725,
-      "sha256": "1dba43bf3d63fb26d491894d2edc78b3d1763b826a53e4eccff66ca5d86a2c25"
+      "bytes": 338053,
+      "sha256": "8e27ba6b8d096fa0954bb037bde9099594cbf01ac9d18af515030fd34adc448a"
     },
     "index.html": {
       "bytes": 22591,
-      "sha256": "6d0c8a48cae938eede34ec5b18994c6f6131a1023811f242a998f168a1ce6f1d"
+      "sha256": "2937b85a61a190cfbee0bb98f5269ec0ebad68c4c001e8978660a9bb796334e0"
     }
   },
   "excluded": [
