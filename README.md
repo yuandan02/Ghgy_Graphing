@@ -6,4 +6,4 @@
 
 固定最新地址：https://yuandan02.github.io/Ghgy_Graphing/
 
-本次独立版本：https://yuandan02.github.io/Ghgy_Graphing/260729-210622/
+本次独立版本：https://yuandan02.github.io/Ghgy_Graphing/260729-214500/

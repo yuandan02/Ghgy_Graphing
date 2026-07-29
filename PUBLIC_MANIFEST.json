@@ -1,8 +1,8 @@
 {
-  "release_id": "260729-210622",
+  "release_id": "260729-214500",
   "stable_url": "https://yuandan02.github.io/Ghgy_Graphing/",
-  "release_url": "https://yuandan02.github.io/Ghgy_Graphing/260729-210622/",
-  "generated_at": "2026-07-29T21:06:22+08:00",
+  "release_url": "https://yuandan02.github.io/Ghgy_Graphing/260729-214500/",
+  "generated_at": "2026-07-29T21:45:00+08:00",
   "indicator_count": 348,
   "chart_count": 12,
   "public_note_count": 2,
@@ -11,45 +11,49 @@
   "derived_text_digest": "f65c7eb822eb03d57b4fb8a416c330d4d7400d5b20913ad9d99f9238997e7821",
   "observation_count_after_public_downsample": 441708,
   "files": {
+    ".github/workflows/pages.yml": {
+      "bytes": 639,
+      "sha256": "7161234bc369595535dfb39ea8f6874c6fa9ff84ea8852e91c6e229385a22c28"
+    },
     ".nojekyll": {
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
-    "260729-210622/RELEASE.json": {
+    "260729-214500/RELEASE.json": {
       "bytes": 368,
-      "sha256": "6b12d5561a6b494572c23afdb0c7bbf11cb2292c264178e20bd411f0ae17fe44"
+      "sha256": "8d0e85a5c2d35e0238a6d4d6b270e3a3ddf45f2d2cc1c526a0df65e79f40ca0e"
     },
-    "260729-210622/index.html": {
-      "bytes": 22600,
-      "sha256": "0e35c6c67b0a5d43506c5c176eadec40e3151b265a3455643010dcfea387bd0f"
+    "260729-214500/index.html": {
+      "bytes": 22611,
+      "sha256": "7b57a9da177dcf7e1cd2b713ce113374f96c2580b966b8e6ab68960516b78495"
     },
     "LATEST_RELEASE.json": {
       "bytes": 368,
-      "sha256": "6b12d5561a6b494572c23afdb0c7bbf11cb2292c264178e20bd411f0ae17fe44"
+      "sha256": "8d0e85a5c2d35e0238a6d4d6b270e3a3ddf45f2d2cc1c526a0df65e79f40ca0e"
     },
     "PUBLIC_CONTENT_AUDIT.json": {
       "bytes": 5437,
-      "sha256": "852c56090c81647c5a16c4b057ee324c811d7134bcefa46156485e6b6ba978f5"
+      "sha256": "15fbc5e4c499a5e0b05b19cda8be2951762b5208f5e996f324a40d8d0ffdea5a"
     },
     "README.md": {
       "bytes": 648,
-      "sha256": "067e54a3655ccf52b16afb80da006fcb4baa95fd12d8da3f6e04ee9ff8a2f507"
+      "sha256": "d950295fd38828524ebd10c7e42872c96e20007f70de5bd82653e5a340f19110"
     },
     "app.css": {
       "bytes": 30217,
       "sha256": "5cbdb415eeeae836f20f67c85813d9f1da10934b4e9b7b59d0dffaf314c06dbb"
     },
     "app.js": {
-      "bytes": 114961,
-      "sha256": "dff958ef2fa39926ac5668e26ddf868826f6cf361e43d72a9fb19b68d1f32231"
+      "bytes": 115614,
+      "sha256": "a74dcb9e56eac36e813f5dfd97efab94096d8d5e0df170a22566022331efce31"
     },
     "bootstrap-data.js": {
       "bytes": 338119,
-      "sha256": "3c094877301542af4f0e120835a1f18c478658cd22bfcfe0dad22ce41bbb390c"
+      "sha256": "89ae52180a3f3b7849319d9c021d2e016fc7105c7df05ad226930bfba601ac81"
     },
     "index.html": {
       "bytes": 22591,
-      "sha256": "58eb0f2ac58d2e7a9a4f3fe910c8271b08582a944f263e7a8c3c77e3dc159980"
+      "sha256": "174bc97ffec61512b991c64033802a634e9f5745875ad97f758d5748baf08a25"
     },
     "series/00020e195970e771cc40b38d.js": {
       "bytes": 574,
