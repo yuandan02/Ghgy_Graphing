@@ -1,0 +1,1 @@
+window.GALLERY_SERIES_CACHE=window.GALLERY_SERIES_CACHE||{};window.GALLERY_SERIES_CACHE["YD-WIND-002-M0058002"]=window.GALLERY_SERIES_CACHE["YD-WIND-002-M0058002"]||{};window.GALLERY_SERIES_CACHE["YD-WIND-002-M0058002"]["2024"]=[{"date":"2024-03-31","value":3.99},{"date":"2024-06-30","value":3.68},{"date":"2024-09-30","value":3.67},{"date":"2024-12-31","value":3.28}];
